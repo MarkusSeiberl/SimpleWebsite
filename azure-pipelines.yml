@@ -29,7 +29,7 @@ stages:
     pool:
       vmImage: $(vmImageName)
     steps:
-    - task: Build
+    - task: build
       displayName: Build an image
       inputs:
         command: build
