@@ -36,8 +36,8 @@ stages:
         repository: $(imageRepository)
         tags: |
           $(tag)
-    - script: npm run test
-      displayName: Test the application
+    #- script: npm run test
+    #  displayName: Test the application
     - task: Docker@2
       displayName: Push an image to container registry
       inputs:
