@@ -21,20 +21,29 @@ variables:
   vmImageName: 'ubuntu-latest'
 
 stages:
-- stage: Build
-  displayName: Build and push stage
+- stage: BuildAndTest
+  displayName: Build, Test and push stage
   jobs:  
   - job: Build
     displayName: Build
     pool:
       vmImage: $(vmImageName)
     steps:
-    - task: Docker@2
-      displayName: Build and push an image to container registry
+    - task: Build
+      displayName: Build an image
       inputs:
-        command: buildAndPush
+        command: build
+        repository: $(imageRepository)
+        tags: |
+          $(tag)
+    - script: npm run test
+      displayName: Test the application
+    - task: Docker@2
+      displayName: Push an image to container registry
+      inputs:
+        command: push
         repository: $(imageRepository)
         dockerfile: $(dockerfilePath)
         containerRegistry: $(dockerRegistryServiceConnection)
-        tags: |
-          $(tag)
+        
+    
